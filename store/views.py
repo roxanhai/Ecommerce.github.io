@@ -19,7 +19,6 @@ def store(request):
     context = {
         "productList": pList
     }
-    print(request.user.username == "")
     return render(request,'store/store.html',context)
 
 @login_required(login_url = 'login')
@@ -64,10 +63,13 @@ def registerPage(request):
         form = CreateUserForm()
         if request.method == 'POST':
             form = CreateUserForm(request.POST)
+            # print(username)
             if form.is_valid():
-                form.save()
+                user = form.save()
                 username = form.cleaned_data.get('username')
-                messages.success(request,'Account was create for' + username)
+                email = form.cleaned_data.get('email')
+                Customer.objects.create(name=username, email=email, user=user)
+                messages.success(request,'Account was create for: ' + username)
                 return redirect('login')
         
         context={'form':form}
@@ -111,6 +113,7 @@ def addToCart(request):
         customer = request.user.customer
         product = Product.objects.get(id = productId)
         order , created = Order.objects.get_or_create(customer=customer,completed=False)
+        
         order_item, created = OrderItem.objects.get_or_create(order=order,product=product)
         
         if action=='add':

@@ -1,0 +1,61 @@
+{% extends 'dashboard/based.html' %} {% block content %}
+
+<br />
+
+<div class="row">
+  <div class="col-md-5">
+    <h5>CUSTOMERS:</h5>
+    <hr />
+    <div class="card card-body">
+      <a class="btn btn-primary btn-sm btn-block" href="">Create Customer</a>
+      <table class="table table-sm">
+        <tr>
+          <th>ID</th>
+          <th>Customer</th>
+          <th>Email</th>
+        </tr>
+        {% for customer in customerList %}
+        <tr>
+          <td>{{customer.user.id}}</td>
+          <td>{{customer.name}}</td>
+          <td>{{customer.email}}</td>
+        </tr>
+        {%endfor%}
+      </table>
+    </div>
+  </div>
+
+  <div class="col-md-7">
+    <h5>LAST 5 ORDERS</h5>
+    <hr />
+    <div class="card card-body">
+      <a class="btn btn-primary btn-sm btn-block" href="">Create Order</a>
+      <table class="table table-sm">
+        <tr>
+          <th>ID</th>
+          <th>Transaction ID</th>
+          <th>Customer</th>
+          <th>Item Quantity</th>
+          <th>Date Ordered</th>
+          <th>Completed Status</th>
+          <th>Update</th>
+          <th>Remove</th>
+        </tr>
+        {% for order in orderList %}
+        <tr>
+          <td>{{order.id}}</td>
+          <td>{{order.transaction_id}}</td>
+          <td>{{order.customer}}</td>
+          <td>{{order.get_cart_total_quantity}}</td>
+          <td>{{order.date_ordered|date:"SHORT_DATE_FORMAT"}}</td>
+          <td>{{order.completed}}</td>
+          <td><a href="#" class="btn btn-info">Update</a></td>
+          <td><a href="#" class="btn btn-danger">Remove</a></td>
+        </tr>
+        {%endfor%}
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
